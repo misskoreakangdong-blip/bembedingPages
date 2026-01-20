@@ -22,52 +22,102 @@
   </script>
   <!-- End Google Tag Manager -->
 
-  <!-- (원본 번들 그대로) -->
+  <!-- (원본 번들 그대로: 기능 유지) -->
   <script type="module" crossorigin src="/assets/index-B8ubH4Ss.js"></script>
   <link rel="stylesheet" crossorigin href="/assets/index-CRh3-r0P.css" />
 
-  <!-- ✅ 참여하기 플로팅 버튼 스타일 (기능 영향 없음) -->
+  <!-- ✅ 참여하기 플로팅 버튼 -->
   <style>
-    .sc-cta {
-      position: fixed;
-      right: 18px;
-      bottom: 18px;
-      z-index: 2147483647;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 10px;
-      padding: 14px 18px;
-      border-radius: 999px;
-      text-decoration: none;
-      font-weight: 800;
-      font-size: 16px;
-      line-height: 1;
-      color: #000;
-      background: #61ffb0;
-      box-shadow: 0 14px 30px rgba(0,0,0,.25);
-      border: 1px solid rgba(0,0,0,.08);
-      cursor: pointer;
-      user-select: none;
-      -webkit-tap-highlight-color: transparent;
+    .sc-cta{
+      position:fixed; right:18px; bottom:18px;
+      z-index:2147483647;
+      display:inline-flex; align-items:center; justify-content:center; gap:10px;
+      padding:14px 18px;
+      border-radius:999px;
+      text-decoration:none;
+      font-weight:800;
+      font-size:16px;
+      line-height:1;
+      color:#000;
+      background:#61ffb0;
+      box-shadow:0 14px 30px rgba(0,0,0,.25);
+      border:1px solid rgba(0,0,0,.08);
+      cursor:pointer;
+      user-select:none;
+      -webkit-tap-highlight-color:transparent;
     }
-    .sc-cta:active { transform: translateY(1px); }
-    .sc-cta small{
-      font-weight: 700;
-      opacity: .75;
-      font-size: 12px;
-    }
-    @media (max-width: 768px){
+    .sc-cta:active{ transform:translateY(1px); }
+    .sc-cta small{ font-weight:700; opacity:.75; font-size:12px; }
+    @media (max-width:768px){
       .sc-cta{
-        left: 16px;
-        right: 16px;
-        bottom: 16px;
-        width: calc(100% - 32px);
-        padding: 16px 18px;
-        font-size: 16px;
+        left:16px; right:16px; bottom:16px;
+        width:calc(100% - 32px);
+        padding:16px 18px;
+        font-size:16px;
       }
     }
   </style>
+
+  <!-- ✅ /assets 이미지 전부 "빈 이미지"로 치환 -->
+  <script>
+    (function () {
+      // 1x1 transparent gif
+      const BLANK =
+        "data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==";
+
+      function blankAssetImages(root) {
+        // img src="/assets/..."
+        const imgs = (root || document).querySelectorAll
+          ? (root || document).querySelectorAll('img[src^="/assets/"]')
+          : [];
+
+        imgs.forEach((img) => {
+          if (img.dataset.__blanked) return;
+          img.dataset.__blanked = "1";
+          img.dataset.__origSrc = img.getAttribute("src") || "";
+          img.setAttribute("src", BLANK);
+          if (img.getAttribute("srcset")) img.setAttribute("srcset", "");
+        });
+
+        // inline style background-image: url("/assets/...")
+        const styled = (root || document).querySelectorAll
+          ? (root || document).querySelectorAll('[style*="/assets/"]')
+          : [];
+
+        styled.forEach((el) => {
+          const style = el.getAttribute("style") || "";
+          if (!style.includes("/assets/")) return;
+          if (el.dataset.__blankedBg) return;
+          el.dataset.__blankedBg = "1";
+          el.dataset.__origStyle = style;
+          // background-image만 제거 (다른 style은 유지)
+          el.style.backgroundImage = "none";
+        });
+      }
+
+      function run() {
+        // 초기 1회
+        blankAssetImages(document);
+
+        // React가 나중에 다시 그리는 것까지 계속 대응
+        const target = document.getElementById("root") || document.body;
+        const obs = new MutationObserver((mutations) => {
+          for (const m of mutations) {
+            m.addedNodes && m.addedNodes.forEach((node) => {
+              if (node && node.nodeType === 1) blankAssetImages(node);
+            });
+          }
+        });
+        obs.observe(target, { childList: true, subtree: true });
+      }
+
+      if (document.readyState === "loading") {
+        document.addEventListener("DOMContentLoaded", run);
+      } else {
+        run();
+      }
+    })();
+  </script>
 </head>
 
 <body>
@@ -82,10 +132,9 @@
   </noscript>
   <!-- End Google Tag Manager (noscript) -->
 
-  <!-- ✅ React 앱은 여기서 그대로 렌더링됨 (기능 유지 핵심) -->
   <div id="root"></div>
 
-  <!-- ✅ 참여하기 버튼 (Typeform 링크) -->
+  <!-- ✅ 참여하기 버튼 -->
   <a
     class="sc-cta"
     href="https://supercent.typeform.com/to/WoRJE7kD"
