@@ -2,136 +2,150 @@
 <html lang="ko">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Supercent Event</title>
-  <meta name="description" content="AI 광고 영상 이벤트 – Supercent" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>슈퍼센트 이벤트</title>
+
+  <link rel="icon" href="https://lh3.googleusercontent.com/d/1h1VFwTQ3S9VimygKUcNXr94tpDMZzi_J=w64" />
 
   <style>
-    * { box-sizing: border-box; }
-    body {
-      margin: 0;
-      font-family: system-ui, -apple-system, "Noto Sans KR", sans-serif;
-      color: #111;
-      background: #fff;
-      line-height: 1.6;
+    :root{--maxw:1080px;--radius:18px}
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family:system-ui,-apple-system,"Noto Sans KR",sans-serif;
+      background:#0b1020;
+      color:#fff;
+      overflow-x:hidden;
     }
-    header, section, footer {
-      padding: 60px 20px;
-      max-width: 1200px;
-      margin: 0 auto;
+    .bg{
+      position:fixed;
+      inset:0;
+      z-index:-2;
+      background:center/cover no-repeat
+        url("https://lh3.googleusercontent.com/d/1TdWUw-9Ha_3D7M_kr7fAn6dmK8w-qdMb=w2400");
     }
-    header {
-      padding-top: 40px;
-      padding-bottom: 40px;
-      border-bottom: 1px solid #e5e5e5;
-    }
-    h1, h2, h3 {
-      margin: 0 0 16px;
-      line-height: 1.3;
-    }
-    p {
-      margin: 0 0 12px;
-    }
-    .muted {
-      color: #666;
-      font-size: 14px;
+    .bg::after{
+      content:"";
+      position:absolute;
+      inset:0;
+      background:linear-gradient(180deg,rgba(0,0,0,.6),rgba(0,0,0,.4),rgba(0,0,0,.7));
     }
 
-    /* 이미지 자리용 공란 */
-    .image-placeholder {
-      width: 100%;
-      height: 220px;
-      background: #f2f2f2;
-      border-radius: 12px;
-      margin: 20px 0;
+    .wrap{
+      max-width:var(--maxw);
+      margin:0 auto;
+      padding:32px 16px 64px;
     }
 
-    .cta {
-      margin-top: 30px;
-    }
-    .cta a {
-      display: inline-block;
-      padding: 16px 28px;
-      border-radius: 999px;
-      background: #61ffb0;
-      color: #000;
-      font-weight: 800;
-      text-decoration: none;
-      box-shadow: 0 10px 24px rgba(0,0,0,.15);
+    .card{
+      border-radius:var(--radius);
+      background:rgba(255,255,255,.1);
+      border:1px solid rgba(255,255,255,.18);
+      backdrop-filter:blur(12px);
+      padding:32px 24px;
+      text-align:center;
     }
 
-    footer {
-      border-top: 1px solid #e5e5e5;
-      font-size: 13px;
-      color: #666;
+    h1{
+      margin:0 0 12px;
+      font-size:24px;
+    }
+    p{
+      margin:0;
+      font-size:14px;
+      opacity:.9;
+    }
+
+    .btn{
+      display:inline-block;
+      margin-top:20px;
+      padding:14px 22px;
+      border-radius:14px;
+      font-weight:700;
+      text-decoration:none;
+      background:#fff;
+      color:#000;
     }
   </style>
 </head>
 
 <body>
+  <div class="bg"></div>
 
-<header>
-  <h1>AI 광고 영상 이벤트</h1>
-  <p class="muted">
-    접수 기간 : 2025.10.27 – 2025.11.23 (UTC)<br>
-    참가 대상 : 국적, 나이 제한 없이 누구나 참여 가능
-  </p>
+  <div class="wrap">
 
-  <div class="cta">
-    <a
-      href="https://supercent.typeform.com/to/WoRJE7kD"
-      target="_blank"
-      rel="noopener noreferrer"
-    >
-      참여하기
-    </a>
+    <!-- =========================
+         상세 페이지
+    ========================== -->
+    <section id="page-detail">
+      <div class="card">
+        <h1>슈퍼센트 이벤트</h1>
+        <p>아래 버튼을 눌러 설문에 참여해주세요.</p>
+
+        <a
+          id="typeformBtn"
+          class="btn"
+          href="https://supercent.typeform.com/to/WoRJE7kD"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          참여하기
+        </a>
+      </div>
+    </section>
+
+    <!-- =========================
+         Thank You 페이지
+    ========================== -->
+    <section id="page-thankyou" hidden>
+      <div class="card">
+        <h1>감사합니다 🎉</h1>
+        <p>설문이 성공적으로 완료되었습니다.</p>
+        <p style="margin-top:8px;opacity:.8">
+          참여해주셔서 감사합니다.
+        </p>
+
+        <a class="btn" href="./">
+          메인으로 돌아가기
+        </a>
+      </div>
+    </section>
+
   </div>
-</header>
 
-<section>
-  <h2>이벤트 소개</h2>
-  <p>
-    AI를 활용해 모바일 게임 광고 영상을 제작하고,
-    심사를 통과할 때마다 보상을 받을 수 있는 글로벌 이벤트입니다.
-  </p>
+  <!-- =========================
+       step + UTM 처리
+  ========================== -->
+  <script>
+    (function () {
+      const params = new URLSearchParams(window.location.search);
 
-  <div class="image-placeholder"></div>
+      // step 처리
+      const step = params.get("step");
+      if (step === "thankyou") {
+        const detail = document.getElementById("page-detail");
+        const thankyou = document.getElementById("page-thankyou");
+        if (detail) detail.hidden = true;
+        if (thankyou) thankyou.hidden = false;
+      }
 
-  <p>
-    제출된 영상은 실제 광고로 집행되며,
-    성과가 우수한 참가자에게는 추가적인 기회가 제공됩니다.
-  </p>
-</section>
+      // UTM 전달
+      const utmParams = new URLSearchParams();
+      for (const [key, value] of params.entries()) {
+        if (key.startsWith("utm_")) {
+          utmParams.append(key, value);
+        }
+      }
 
-<section>
-  <h2>혜택</h2>
-  <ul>
-    <li>1차 심사 통과 시 영상 1개당 $100 지급</li>
-    <li>무제한 제출 가능</li>
-    <li>우수 성과자 대상 멘토링 및 추가 계약 기회</li>
-    <li>최대 $1,000,000 규모 추가 계약 가능</li>
-  </ul>
-
-  <div class="image-placeholder"></div>
-</section>
-
-<section>
-  <h2>참여 방법</h2>
-  <ol>
-    <li>지정된 게임 중 하나 선택</li>
-    <li>AI를 활용해 광고 영상 제작</li>
-    <li>영상 + AI 사용 증빙 자료 제출</li>
-  </ol>
-</section>
-
-<footer>
-  <p>
-    슈퍼센트 주식회사<br>
-    서울특별시 송파구 올림픽로 300, 롯데월드타워 9층<br>
-    EMAIL : help@supercent.io
-  </p>
-  <p>© 2026 Supercent. All rights reserved.</p>
-</footer>
-
+      if ([...utmParams].length > 0) {
+        const btn = document.getElementById("typeformBtn");
+        if (btn) {
+          const baseUrl = btn.getAttribute("href");
+          const joinChar = baseUrl.includes("?") ? "&" : "?";
+          btn.setAttribute("href", baseUrl + joinChar + utmParams.toString());
+        }
+      }
+    })();
+  </script>
 </body>
 </html>
